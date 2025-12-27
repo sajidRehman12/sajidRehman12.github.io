@@ -136,8 +136,7 @@ function sendToZap(id, name, price) {
 
   fetch(ZAP_WEBHOOK_URL, {
     method: "POST",
-    mode: "no-cors", // important for GitHub Pages
-    body: JSON.stringify(payload) // <-- was cut off in your snippet
+     body: JSON.stringify(payload) // <-- was cut off in your snippet
   });
 
   // Inform the user (browser cannot detect response due to no-cors)
