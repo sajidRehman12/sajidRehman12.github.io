@@ -124,36 +124,25 @@
 <script>
   const ZAP_WEBHOOK_URL = "https://hooks.zapier.com/hooks/catch/25837596/uav6fhp/";
 
-  function sendToZap(id, name, price) {
-    const payload = {
-      product_id: id,
-      product_name: name,
-      price: price,
-      currency: "USD",
-      quantity: 1,
-      timestamp: new Date().toISOString()
-    };
+function sendToZap(id, name, price) {
+  const payload = {
+    product_id: id,
+    product_name: name,
+    price: price,
+    currency: "USD",
+    quantity: 1,
+    timestamp: new Date().toISOString()
+  };
 
-    fetch(ZAP_WEBHOOK_URL, {
-      method: "POST",
-      mode: "no-cors",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(payload)
-    })
-    .then(res => {
-      if (res.ok) {
-        alert("Product sent to Zap successfully!");
-      } else {
-        alert("Failed to send data to Zap");
-      }
-    })
-    .catch(err => {
-      console.error(err);
-      alert("Error sending data");
-    });
-  }
+  fetch(ZAP_WEBHOOK_URL, {
+    method: "POST",
+    mode: "no-cors", // important for GitHub Pages
+    body: JSON.stringify(payload) // <-- was cut off in your snippet
+  });
+
+  // Inform the user (browser cannot detect response due to no-cors)
+  alert("Product sent to Zapier! Check Zapier dashboard to confirm.");
+}
 </script>
 
 </body>
