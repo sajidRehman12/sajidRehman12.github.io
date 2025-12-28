@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Doctor Appointment</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+  body {
+    font-family: "Segoe UI", sans-serif;
+    background: linear-gradient(135deg, #e3f2fd, #f9fbff);
+    margin: 0;
+    padding: 0;
+  }
+
+  .wrapper {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .card {
+    width: 90%;
+    max-width: 900px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+  }
+
+  .left {
+    background: #007bff;
+    color: white;
+    padding: 40px;
+  }
+
+  .left h1 {
+    margin-top: 0;
+    font-size: 32px;
+  }
+
+  .left p {
+    margin-top: 15px;
+    line-height: 1.6;
+    opacity: 0.95;
+  }
+
+  .right {
+    padding: 40px;
+  }
+
+  form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .full {
+    grid-column: 1 / 3;
+  }
+
+  label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    padding: 10px 12px;
+    margin-top: 6px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+  }
+
+  textarea {
+    resize: none;
+  }
+
+  button {
+    grid-column: 1 / 3;
+    padding: 14px;
+    background: #007bff;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  button:hover {
+    background: #0056b3;
+  }
+
+  @media (max-width: 768px) {
+    .card {
+      grid-template-columns: 1fr;
+    }
+    form {
+      grid-template-columns: 1fr;
+    }
+    .full, button {
+      grid-column: 1;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+  <div class="card">
+
+    <div class="left">
+      <h1>Doctor Appointment</h1>
+      <p>
+        Book your appointment with certified doctors.
+        Choose your doctor, select a suitable time,
+        and receive instant confirmation.
+      </p>
+    </div>
+
+    <div class="right">
+      <form id="appointmentForm">
+
+        <div>
+          <label>Patient Name</label>
+          <input type="text" id="name" required>
+        </div>
+
+        <div>
+          <label>Email</label>
+          <input type="email" id="email" required>
+        </div>
+
+        <div>
+          <label>Phone</label>
+          <input type="tel" id="phone" required>
+        </div>
+
+        <div>
+          <label>Doctor</label>
+          <select id="doctor" required>
+            <option value="">Select Doctor</option>
+            <option>Dr. Ahmed – Cardiologist</option>
+            <option>Dr. Sara – Dermatologist</option>
+            <option>Dr. Usman – Orthopedic</option>
+            <option>Dr. Ayesha – General Physician</option>
+          </select>
+        </div>
+
+        <div>
+          <label>Date</label>
+          <input type="date" id="date" required>
+        </div>
+
+        <div>
+          <label>Time</label>
+          <input type="time" id="time" required>
+        </div>
+
+        <div class="full">
+          <label>Reason for Visit</label>
+          <textarea id="reason" rows="3"></textarea>
+        </div>
+
+        <button type="submit">Book Appointment</button>
+
+      </form>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  document.getElementById("appointmentForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const appointmentDateTime = `${date.value}T${time.value}`;
+    const data = {
+      name: name.value,
+      email: email.value,
+      phone: phone.value,
+      doctor: doctor.value,
+      date: date.value,
+      time: time.value,
+      datetime: appointmentDateTime,
+      
+      reason: reason.value
+    };
+
+    const webhookURL = "https://hooks.zapier.com/hooks/catch/25837596/uwy82sg/";
+
+    fetch(webhookURL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    })
+    .then(() => {
+      alert("Appointment booked successfully!");
+      this.reset();
+    })
+    .catch(() => alert("Submission failed"));
+  });
+</script>
+
+</body>
+</html>
+
