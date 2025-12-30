@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Engineer Equipment Rental Service</title>
+<title>Car Rental Service</title>
+
 <style>
   body {
     font-family: Arial, sans-serif;
@@ -10,6 +11,7 @@
     margin: 0;
     padding: 0;
   }
+
   .container {
     max-width: 800px;
     margin: 50px auto;
@@ -18,15 +20,18 @@
     border-radius: 10px;
     box-shadow: 0 0 15px rgba(0,0,0,0.1);
   }
+
   h1 {
     text-align: center;
     margin-bottom: 25px;
   }
+
   label {
     font-weight: bold;
     display: block;
     margin-top: 15px;
   }
+
   input, select, textarea {
     width: 100%;
     padding: 10px;
@@ -34,6 +39,7 @@
     border-radius: 5px;
     border: 1px solid #ccc;
   }
+
   button {
     margin-top: 20px;
     padding: 12px;
@@ -45,20 +51,25 @@
     cursor: pointer;
     border-radius: 5px;
   }
+
   button:hover {
     background: #0056b3;
   }
+
   .hidden {
     display: none;
   }
 </style>
 </head>
+
 <body>
+
 <div class="container">
-  <h1>Engineer Equipment Rental Service</h1>
+  <h1>Car Rental Service</h1>
 
   <form id="rentalForm">
-    <label>Engineer Name</label>
+
+    <label>Customer Name</label>
     <input type="text" id="name" required>
 
     <label>Email</label>
@@ -67,53 +78,55 @@
     <label>Phone Number</label>
     <input type="tel" id="phone" required>
 
-    <label>Equipment Name</label>
-    <select id="category" required>
+    <label>Car Type</label>
+    <select id="carType" required>
       <option value="">Select</option>
-      <option>JCB</option>
-      <option>Pliers</option>
-      <option>Trowel</option>
-      <option>Showel</option>
-      <option>Step Ladder</option>
+      <option>Sedan</option>
+      <option>SUV</option>
+      <option>Hatchback</option>
+      <option>Luxury</option>
+      <option>Van</option>
     </select>
 
-    <label>Equipment Name / Model</label>
-    <input type="text" id="equipment" required>
+    <label>Car Model</label>
+    <input type="text" id="carModel" placeholder="e.g. Toyota Corolla" required>
 
-    <label>Quantity</label>
+    <label>Number of Cars</label>
     <input type="number" id="quantity" min="1" required>
 
-    <label>Rental Start Date</label>
+    <label>Pickup Date</label>
     <input type="date" id="startDate" required>
 
-    <label>Rental End Date</label>
+    <label>Return Date</label>
     <input type="date" id="endDate" required>
 
-    <label>Delivery Required?</label>
-    <select id="delivery">
-      <option value="No">No (Pickup)</option>
+    <label>Driver Required?</label>
+    <select id="driver">
+      <option value="No">No (Self Drive)</option>
       <option value="Yes">Yes</option>
     </select>
 
     <div id="addressField" class="hidden">
-      <label>Delivery Address</label>
+      <label>Pickup Address</label>
       <textarea id="address"></textarea>
     </div>
 
     <label>
       <input type="checkbox" id="agreement" required>
-      I agree to the rental terms and conditions
+      I agree to the car rental terms and conditions
     </label>
 
     <button type="submit">Submit Rental Request</button>
+
   </form>
 </div>
 
 <script>
-  // Show/hide delivery address field
-  document.getElementById("delivery").addEventListener("change", function () {
-    const addressField = document.getElementById("addressField");
-    addressField.classList.toggle("hidden", this.value !== "Yes");
+  // Show/hide address field if driver is required
+  document.getElementById("driver").addEventListener("change", function () {
+    document
+      .getElementById("addressField")
+      .classList.toggle("hidden", this.value !== "Yes");
   });
 
   // Form submission
@@ -121,49 +134,39 @@
     e.preventDefault();
 
     const data = {
-      name: document.getElementById("name").value,
+      customer_name: document.getElementById("name").value,
       email: document.getElementById("email").value,
       phone: document.getElementById("phone").value,
-      category: document.getElementById("category").value,
-      equipment: document.getElementById("equipment").value,
+      car_type: document.getElementById("carType").value,
+      car_model: document.getElementById("carModel").value,
       quantity: document.getElementById("quantity").value,
-      startDate: document.getElementById("startDate").value,
-      endDate: document.getElementById("endDate").value,
-      delivery: document.getElementById("delivery").value,
-      address: document.getElementById("address").value
+      pickup_date: document.getElementById("startDate").value,
+      return_date: document.getElementById("endDate").value,
+      driver_required: document.getElementById("driver").value,
+      pickup_address: document.getElementById("address").value,
+      submitted_at: new Date().toISOString()
     };
 
-    // Zapier Webhook URL
-    const webhookURL = "https://hooks.zapier.com/hooks/catch/25837596/uav3m7d/"; // Replace with your Zap URL
+    const webhookURL = "https://hooks.zapier.com/hooks/catch/25837596/uav3m7d/";
 
     fetch(webhookURL, {
       method: "POST",
-      mode:"no-cors",
+      mode: "no-cors",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
-     
     })
-    .then(response => {
-      if(response.ok){
-        alert("Your rental request has been submitted successfully!");
-        document.getElementById("rentalForm").reset();
-        document.getElementById("addressField").classList.add("hidden");
-      }
-      else{
-        alert("Your rental request has been submitted successfully!");
-      
-      }
+    .then(() => {
+      alert("Your car rental request has been submitted successfully!");
+      document.getElementById("rentalForm").reset();
+      document.getElementById("addressField").classList.add("hidden");
     })
-      
-    .catch(error => {
-     
-      
-      alert("YOUR REQUEST HAS BEEN SUBMITTED");
-      
+    .catch(() => {
+      alert("Your car rental request has been submitted successfully!");
     });
- console.log(data);
+
+    console.log(data);
   });
 </script>
+
 </body>
 </html>
-
